@@ -1,5 +1,5 @@
 pkgname=justssh
-pkgver=1.0.1
+pkgver=1.0.2
 pkgrel=1
 pkgdesc="Minimal SSH launcher for the terminal"
 arch=('x86_64' 'aarch64')
@@ -7,7 +7,7 @@ url="https://github.com/luynrs/justssh"
 license=('MIT')
 makedepends=('go')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/luynrs/justssh/archive/refs/tags/v$pkgver.tar.gz")
-sha256sums=('dfb92d659932a697922dea274d281af925b0e7d8e6a97beecf7e19617179e35f')
+sha256sums=('8375f2a362aee8128ed26e064e0a8912a0e7efd3f8a0d04acd0105147dc2d325')
 
 build() {
 	cd "$pkgname-$pkgver"

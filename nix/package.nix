@@ -2,13 +2,13 @@
 
 buildGoModule rec {
   pname = "justssh";
-  version = "1.0.1";
+  version = "1.0.2";
 
   src = fetchFromGitHub {
     owner = "luynrs";
     repo = "justssh";
     rev = "v${version}";
-    hash = "sha256-BtcvrbaGQa07HZEJN31fF53HNdPwCLfOMi3NY3hA5Ec=";
+    hash = "sha256-ZsRILOdd1DfjxNuFmGOz4lId+pggqZw1edZaUblABGg=";
   };
 
   vendorHash = "sha256-aJllcMJduoi8VBWMJWsxm8swXtNonYZzX8etmNZePzc=";
