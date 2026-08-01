@@ -48,18 +48,6 @@ nfpms:
       - apk
     bindir: /usr/bin
 
-homebrew_casks:
-  - name: justssh
-    homepage: https://github.com/luynrs/justssh
-    description: Minimal SSH launcher for the terminal
-    license: MIT
-    repository:
-      owner: luynrs
-      name: homebrew-tap
-    directory: Casks
-    binaries:
-      - jssh
-
 aurs:
   - name: justssh-bin
     homepage: https://github.com/luynrs/justssh
