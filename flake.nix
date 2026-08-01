@@ -10,7 +10,7 @@
     in {
       packages.${system}.default = pkgs.buildGoModule {
         pname = "justssh";
-        version = "1.0.0";
+        version = "1.0.1";
         src = ./.;
         vendorHash = "sha256-aJllcMJduoi8VBWMJWsxm8swXtNonYZzX8etmNZePzc=";
         subPackages = [ "cmd/jssh" ];
