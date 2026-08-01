@@ -1,0 +1,74 @@
+version: 2
+
+project_name: justssh
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: jssh
+    main: ./cmd/jssh
+    binary: jssh
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+
+archives:
+  - id: jssh
+    formats: [tar.gz]
+    name_template: >-
+      {{ .ProjectName }}_{{ .Os }}_{{ .Arch }}
+
+checksum:
+  name_template: checksums.txt
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+
+nfpms:
+  - id: jssh
+    package_name: justssh
+    homepage: https://github.com/luynrs/justssh
+    description: Minimal SSH launcher for the terminal
+    maintainer: luynrs
+    license: MIT
+    formats:
+      - deb
+      - rpm
+      - apk
+    bindir: /usr/bin
+
+homebrew_casks:
+  - name: justssh
+    homepage: https://github.com/luynrs/justssh
+    description: Minimal SSH launcher for the terminal
+    license: MIT
+    repository:
+      owner: luynrs
+      name: homebrew-tap
+    directory: Casks
+    binaries:
+      - jssh
+
+aurs:
+  - name: justssh-bin
+    homepage: https://github.com/luynrs/justssh
+    description: Minimal SSH launcher for the terminal
+    maintainers:
+      - luynrs
+    license: MIT
+    private_key: "{{ .Env.AUR_KEY }}"
+    git_url: "ssh://aur@aur.archlinux.org/justssh-bin.git"
+    package: |-
+      install -Dm755 "./jssh" "${pkgdir}/usr/bin/jssh"
+      install -Dm644 "./LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"

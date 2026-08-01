@@ -24,6 +24,8 @@ JustSSH                                                    5/5
 go install github.com/luynrs/justssh/cmd/jssh@latest
 ```
 
+Arch: `packaging/PKGBUILD`. Nix: `nix profile install github:luynrs/justssh`. Releases (deb/rpm/homebrew) are built by `.goreleaser.yaml` on every tag.
+
 ## Usage
 
 Run `jssh`, pick a server, hit enter and that's all
