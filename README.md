@@ -1,6 +1,10 @@
 # JustSSH
 
-Open. Select. Connect.
+<a href="https://repology.org/project/justssh/versions">
+    <img src="https://repology.org/badge/vertical-allrepos/justssh.svg" alt="Packaging status" align="right">
+</a>
+
+Open. Select and JUST Connect.
 
 A minimal SSH launcher for the terminal. No dashboard, no borders, no
 boxes, just a list of servers and a prompt that gets out of your way the
