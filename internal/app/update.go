@@ -59,22 +59,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, nil
 }
 
-// fast typing split before disp.
 func (m Model) updateKey(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
-	if msg.Type == tea.KeyRunes && len(msg.Runes) > 1 && !msg.Paste {
-		var cmds []tea.Cmd
-		for _, r := range msg.Runes {
-			var cmd tea.Cmd
-			var next tea.Model
-			next, cmd = m.updateKey(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{r}, Alt: msg.Alt})
-			m = next.(Model)
-			if cmd != nil {
-				cmds = append(cmds, cmd)
-			}
-		}
-		return m, tea.Batch(cmds...)
-	}
-
 	switch msg.String() {
 	case "ctrl+c":
 		m.quitting = true

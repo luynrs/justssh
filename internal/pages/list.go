@@ -20,6 +20,8 @@ type ListModel struct {
 	searching bool
 	search    textinput.Model
 	termWidth int
+
+	confirm bool
 }
 
 func NewList(styles theme.Styles, servers []models.Server) ListModel {
@@ -49,6 +51,13 @@ func (m *ListModel) SetTermWidth(w int) {
 }
 
 func (m ListModel) Update(msg tea.KeyMsg) (ListModel, tea.Cmd) {
+	if m.confirm {
+		m.confirm = false
+		if msg.String() == "y" {
+			return m, m.deleteCmd()
+		}
+		return m, nil
+	}
 	if m.searching {
 		return m.updateSearching(msg)
 	}
@@ -68,7 +77,9 @@ func (m ListModel) Update(msg tea.KeyMsg) (ListModel, tea.Cmd) {
 	case "e":
 		return m, m.editCmd()
 	case "d":
-		return m, m.deleteCmd()
+		if _, ok := m.selected(); ok {
+			m.confirm = true
+		}
 	}
 	return m, nil
 }
@@ -156,12 +167,16 @@ func (m ListModel) deleteCmd() tea.Cmd {
 func (m ListModel) View() string {
 	var b strings.Builder
 
+	idx := m.visible()
+
 	footer := m.footer()
 	alignWidth := m.alignWidth(footer)
-	b.WriteString(m.header(alignWidth))
+	if m.confirm && len(idx) > 0 {
+		footer = m.confirmFooter(m.servers[idx[m.cursor]].Name, alignWidth)
+	}
+	b.WriteString(m.header(len(idx), alignWidth))
 	b.WriteString("\n\n")
 
-	idx := m.visible()
 	if len(idx) == 0 {
 		b.WriteString(m.styles.Dim.Render("  No servers. Press a to add one."))
 		b.WriteString("\n")
@@ -197,9 +212,9 @@ func (m ListModel) alignWidth(footer string) int {
 	return w
 }
 
-func (m ListModel) header(footerWidth int) string {
+func (m ListModel) header(visibleCount, footerWidth int) string {
 	title := m.styles.Title.Render("JustSSH")
-	count := m.styles.Dim.Render(fmt.Sprintf("%d/%d", len(m.visible()), len(m.servers)))
+	count := m.styles.Dim.Render(fmt.Sprintf("%d/%d", visibleCount, len(m.servers)))
 
 	if m.searching {
 		left := title + " " + m.styles.Dim.Render("~ Search:") + " " + m.search.View()
@@ -226,6 +241,12 @@ func (m ListModel) footer() string {
 		{"d", "Delete"},
 		{"q", "Quit"},
 	})
+}
+
+func (m ListModel) confirmFooter(name string, width int) string {
+	msg := m.styles.Error.Render(fmt.Sprintf("Delete %s?", name))
+	hints := renderHints(m.styles, [][2]string{{"y", "Confirm"}, {"any", "Cancel"}})
+	return alignRight(msg, hints, width)
 }
 
 func renderHints(styles theme.Styles, hints [][2]string) string {
